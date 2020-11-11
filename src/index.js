@@ -1,7 +1,3 @@
-import BspNode from './bsp-node';
-import Bsp from './bsp';
+import bsp from './bsp';
 
-export default {
-  BspNode,
-  Bsp
-};
+export default { bsp };

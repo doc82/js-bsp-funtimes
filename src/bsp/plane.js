@@ -8,6 +8,7 @@ const POLY_CLASSES = {
   SPANNING: 3
 };
 
+// TODO: do we need to upgrade this to include additional information?
 export default class Plane {
   constructor(normal, w) {
     this.normal = normal;

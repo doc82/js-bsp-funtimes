@@ -1,8 +1,9 @@
 # js-bsp-funtimes
-An attempt to build a BSP library in Javascript for use in WebGL/2D canvas rendering, collision detection, and shadowing - in modern JS!
+Inspired, and based upon the the project [CSG.JS on Github](https://github.com/evanw/csg.js)/ [CSG.JS Docs](http://evanw.github.io/csg.js/docs/).
 
-# References
-Inspired by the the project https://github.com/evanw/csg.js and the following sources:
+The goal of this project is to re-write the above framework into a library that can be used to demonstrate rendering of moving objects, shadowing, collision detection, and more! 
+
+# Random References to BSP
 * http://www.gamers.org/dhs/helpdocs/bsp_faq.html
 * https://github.com/ivanelianto/Binary-Space-Partitioning-Algorithm
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/G46.pdf
