@@ -1,7 +1,7 @@
 # js-bsp-funtimes
 Inspired, and based upon the the project [CSG.JS on Github](https://github.com/evanw/csg.js)/ [CSG.JS Docs](http://evanw.github.io/csg.js/docs/).
 
-The goal of this project is to re-write the above framework into a library that can be used to demonstrate rendering of moving objects, shadowing, collision detection, and more! 
+The goal of this project is to build a BSP from scratch in 2020 JS snytax for use in a demo-project to demonstrate utilizing a BSP for moving objects, and scene/object rendering in WebGL. For use in education/training purposes. Collaboration welcomed! 
 
 # Random References to BSP
 * http://www.gamers.org/dhs/helpdocs/bsp_faq.html
