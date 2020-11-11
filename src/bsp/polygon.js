@@ -1,19 +1,19 @@
 import Plane from './plane';
 
 // The vertices  used to intialize the  polygon, must be coplanar and convex.
-// Each convex polygon has a `shared` property, which is shared between all,
 // polygons that are clones of each other or were split from the same polygon.
 // This can be used to define per-polygon properties (such as surface color).
 export default class Polygon {
-  constructor(vertices, shared = false) {
+  constructor(vertices, parent = null) {
     this.vertices = vertices;
-    this.shared = shared || false;
-    // TODO: pick a better way to determine the plane
-    this.plane = new Plane.build(
-      vertices[0].pos,
-      vertices[1].pos,
-      vertices[2].pos
-    );
+    this.shared = false;
+    this.plane = Plane.build(vertices[0].pos, vertices[1].pos, vertices[2].pos);
+
+    // Is this polygon shared in multiple nodes in the tree? (if it is, then this is a clone'd polygon)
+    if (parent && parent != undefined) {
+      this.parent = parent;
+      this.shared = true;
+    }
   }
 
   clone = () => {

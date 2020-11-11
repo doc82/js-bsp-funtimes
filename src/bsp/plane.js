@@ -15,10 +15,10 @@ export default class Plane {
     this.w = w;
   }
 
-  //   Build from 3 veticies
-  static build = (a, b, c) => {
-    const n = b.minus(a).cross(c.minus(a)).unit();
-    return new Plane(n, n.dot(a));
+  // Build from X, Y, Z
+  static build = (x, y, z) => {
+    const n = y.minus(x).cross(z.minus(x)).unit();
+    return new Plane(n, n.dot(x));
   };
 
   clone = () => {
@@ -38,13 +38,16 @@ export default class Plane {
     const { normal, w } = this;
     // The list of polygon-types we find
     const types = [];
-    // Used for spanning polygons
+    // Used for coplanar(eg, 'spanning) polygons
     const pFront = [];
     const pBack = [];
     // The Classification of this polygon
     let polygonType = 0;
 
-    // Classify each point and polygon into one of the four classes
+    // Loop over the polygbon's verticies to determine if:
+    // 1) Is the polygon in front of the plane?
+    // 2) Is the polygon behind the plane?
+    // 3) Edge-case: Is the polygon split into both front/back?
     for (let i = 0; i < polygon.vertices.length; i += 1) {
       const t = normal.dot(polygon.vertices[i].pos) - w;
       const theType =
@@ -53,6 +56,7 @@ export default class Plane {
           : t > EPSILON
           ? POLY_CLASSES.FRONT
           : POLY_CLASSES.COPLANAR;
+
       polygonType |= theType;
       types.push(theType);
     }
@@ -75,7 +79,9 @@ export default class Plane {
         // Split the spanned polygon
         for (let i = 0; i < polygon.vertices.length; i += 1) {
           const j = (i + 1) % polygon.vertices.length;
+          // Grab this vertice's "class"
           const ti = types[i];
+          // Grab the opposite vertice "class"
           const tj = types[j];
           const vi = polygon.vertices[i];
           const vj = polygon.vertices[j];
@@ -86,6 +92,7 @@ export default class Plane {
           if (ti != POLY_CLASSES.FRONT) {
             pBack.push(ti != POLY_CLASSES.BACK ? vi.clone() : vi);
           }
+          // Check if the two verticies are spanning
           if ((ti | tj) == POLY_CLASSES.SPANNING) {
             const t =
               (w - normal.dot(vi.pos)) / normal.dot(vj.pos.minus(vi.pos));
@@ -94,8 +101,10 @@ export default class Plane {
             pBack.push(v.clone());
           }
         }
-        if (pFront.length >= 3) front.push(new Polygon(pFront, polygon.shared));
-        if (pBack.length >= 3) back.push(new Polygon(pBack, polygon.shared));
+
+        // Clone the coplanar verticies, and keep a pointer back to the parent
+        if (pFront.length >= 3) front.push(new Polygon(pFront, polygon));
+        if (pBack.length >= 3) back.push(new Polygon(pBack, polygon));
         break;
       default:
         break;
