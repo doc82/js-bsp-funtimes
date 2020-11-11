@@ -32,7 +32,8 @@ export default class Plane {
     this.w -= w;
   };
 
-  //   Split polygon by this plane (if needed), then place the polygon(or polygon fragment) into appropiate classification lists
+  // Split a polygon by this plane, then place the organize by orientation to this plane
+  // This handles the coplanar edge-case
   splitPolygon = (polygon, coplanarFront, coplanarBack, front, back) => {
     const { normal, w } = this;
     // The list of polygon-types we find
