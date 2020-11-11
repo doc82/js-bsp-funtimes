@@ -39,7 +39,7 @@ export default class BspTree {
     // add the remaining polygons in B into A
     a.build(b.getPolygons());
 
-    return  new BspTree(a.getPolygons());
+    return new BspTree(a.getPolygons());
   };
 
   subtract = (bspInstance) => {

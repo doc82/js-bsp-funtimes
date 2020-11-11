@@ -78,24 +78,28 @@ export default class Plane {
       case POLY_CLASSES.SPANNING:
         // Split the spanned polygon
         for (let i = 0; i < polygon.vertices.length; i += 1) {
+          // TODO: Need to improve the way we identify coplanar polygons, this feels super janky
           const j = (i + 1) % polygon.vertices.length;
           // Grab this vertice's "class"
           const ti = types[i];
-          // Grab the opposite vertice "class"
+          // Grab the opposite vertice
           const tj = types[j];
           const vi = polygon.vertices[i];
           const vj = polygon.vertices[j];
 
+          // Save the front-facing vertex
           if (ti != POLY_CLASSES.BACK) {
             pFront.push(vi);
           }
           if (ti != POLY_CLASSES.FRONT) {
             pBack.push(ti != POLY_CLASSES.BACK ? vi.clone() : vi);
           }
-          // Check if the two verticies are spanning
+          // Check if the two verticies are spanning, and then split along the intersection
           if ((ti | tj) == POLY_CLASSES.SPANNING) {
+            // Grab the intersection
             const t =
               (w - normal.dot(vi.pos)) / normal.dot(vj.pos.minus(vi.pos));
+            // Generate new vertex for the split (this needs a front and a back)
             const v = vi.interpolate(vj, t);
             pFront.push(v);
             pBack.push(v.clone());
