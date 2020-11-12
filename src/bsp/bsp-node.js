@@ -1,8 +1,3 @@
-// Holds a node in a BSP tree. A BSP tree is built from a collection of polygons
-// by picking a polygon to split along. That polygon (and all other coplanar
-// polygons) are added directly to that node and the other polygons are added to
-// the front and/or back subtrees. This is not a leafy BSP tree since there is
-// no distinction between internal and leaf nodes.
 export default class BspNode {
   constructor(polygons = []) {
     this.plane = null;
@@ -28,9 +23,7 @@ export default class BspNode {
     for (let i = 0; i < polygons.length; i += 1) {
       polygons[i].flip();
     }
-
     plane.flip();
-
     if (front) front.invert();
     if (back) back.invert();
 
