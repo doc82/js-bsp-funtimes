@@ -1,7 +1,7 @@
-import Polygon from './polygon';
-import Vector from './vector';
-import Vertex from './vertex';
-import BspTree from './bsp';
+import Polygon from '../polygon';
+import Vector from '../vector';
+import Vertex from '../vertex';
+import BspTree from '../bsp';
 
 const CUBE_DEFAULTS = [
   [
@@ -50,6 +50,7 @@ class Cube {
           );
           return new Vertex(pos, new Vector(info[1]));
         });
+
         return new Polygon(dd);
       })
     );
@@ -60,15 +61,15 @@ class Cylinder {
   constructor(options = {}) {
     var s = new Vector(options.start || [0, -1, 0]);
     var e = new Vector(options.end || [0, 1, 0]);
-    var ray = e.minus(s);
+    var ray = e.subtract(s);
     var radius = options.radius || 1;
     var slices = options.slices || 16;
-    var axisZ = ray.unit(),
+    var axisZ = ray.unitVector(),
       isY = Math.abs(axisZ.y) > 0.5;
-    var axisX = new Vector(isY, !isY, 0).cross(axisZ).unit();
-    var axisY = axisX.cross(axisZ).unit();
+    var axisX = new Vector(isY, !isY, 0).cross(axisZ).unitVector();
+    var axisY = axisX.cross(axisZ).unitVector();
     var start = new Vertex(s, axisZ.negated());
-    var end = new Vertex(e, axisZ.unit());
+    var end = new Vertex(e, axisZ.unitVector());
     var polygons = [];
 
     for (var i = 0; i < slices; i++) {

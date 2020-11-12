@@ -1,5 +1,6 @@
 import Polygon from './polygon';
 
+//  The standard  solution is to make the plane "thick" by use of an epsilon value.
 const EPSILON = 1e-5;
 const POLY_CLASSES = {
   COPLANAR: 0,
@@ -10,33 +11,33 @@ const POLY_CLASSES = {
 
 // TODO: do we need to upgrade this to include additional information?
 export default class Plane {
-  constructor(normal, w) {
-    this.normal = normal;
-    this.w = w;
+  constructor(planeVector, w) {
+    this.planeVector = planeVector;
+    this.planeVector = w;
   }
 
-  // Build from X, Y, Z
+  // Factory to build a plane from three vectoor's of a polygon
   static build = (x, y, z) => {
-    const n = y.minus(x).cross(z.minus(x)).unit();
+    const n = y.subtract(x).cross(z.subtract(x)).unitVector();
     return new Plane(n, n.dot(x));
   };
 
   clone = () => {
-    const { normal, w } = this;
-    return new Plane(normal.clone(), w);
+    const { planeVector, w } = this;
+    return new Plane(planeVector.clone(), w);
   };
 
   flip = () => {
-    const { normal, w } = this;
-    this.normal = normal.negate();
+    const { planeVector, w } = this;
+    this.planeVector = planeVector.negate();
     this.w -= w;
   };
 
   // Split a polygon by this plane, then place the organize by orientation to this plane
   // This handles the coplanar edge-case
   splitPolygon = (polygon, coplanarFront, coplanarBack, front, back) => {
-    const { normal, w } = this;
-    // The list of polygon-types we find
+    const { planeVector, w } = this;
+    // The list of polygon-types we find from each of the verticies of this polygon
     const types = [];
     // Used for coplanar(eg, 'spanning) polygons
     const pFront = [];
@@ -49,11 +50,12 @@ export default class Plane {
     // 2) Is the polygon behind the plane?
     // 3) Edge-case: Is the polygon split into both front/back?
     for (let i = 0; i < polygon.vertices.length; i += 1) {
-      const t = normal.dot(polygon.vertices[i].pos) - w;
+      const pos = polygon.vertices[i].pos;
+      const side = planeVector.dot(pos) - w;
       const theType =
-        t < EPSILON
+        side < EPSILON
           ? POLY_CLASSES.BACK
-          : t > EPSILON
+          : side > EPSILON
           ? POLY_CLASSES.FRONT
           : POLY_CLASSES.COPLANAR;
 
@@ -64,7 +66,7 @@ export default class Plane {
     // Place polygon into the correct list, splitting if we have intersections
     switch (polygonType) {
       case POLY_CLASSES.COPLANAR:
-        (normal.dot(polygon.plane.normal) > 0
+        (planeVector.dot(polygon.plane.planeVector) > 0
           ? coplanarFront
           : coplanarBack
         ).push(polygon);
@@ -81,26 +83,30 @@ export default class Plane {
           // TODO: Need to improve the way we identify coplanar polygons, this feels super janky
           const j = (i + 1) % polygon.vertices.length;
           // Grab this vertice's "class"
-          const ti = types[i];
+          const pointAClass = types[i];
           // Grab the opposite vertice
-          const tj = types[j];
-          const vi = polygon.vertices[i];
-          const vj = polygon.vertices[j];
+          const pointBClass = types[j];
+          const pointA = polygon.vertices[i];
+          const pointB = polygon.vertices[j];
 
           // Save the front-facing vertex
-          if (ti != POLY_CLASSES.BACK) {
-            pFront.push(vi);
+          if (pointAClass != POLY_CLASSES.BACK) {
+            pFront.push(pointA);
           }
-          if (ti != POLY_CLASSES.FRONT) {
-            pBack.push(ti != POLY_CLASSES.BACK ? vi.clone() : vi);
+          if (pointAClass != POLY_CLASSES.FRONT) {
+            pBack.push(
+              pointAClass != POLY_CLASSES.BACK ? pointA.clone() : pointA
+            );
           }
+
           // Check if the two verticies are spanning, and then split along the intersection
-          if ((ti | tj) == POLY_CLASSES.SPANNING) {
+          if ((pointAClass | pointBClass) == POLY_CLASSES.SPANNING) {
             // Grab the intersection
             const t =
-              (w - normal.dot(vi.pos)) / normal.dot(vj.pos.minus(vi.pos));
+              (w - planeVector.dot(pointA.pos)) /
+              planeVector.dot(pointB.pos.subtract(pointA.pos));
             // Generate new vertex for the split (this needs a front and a back)
-            const v = vi.interpolate(vj, t);
+            const v = pointA.interpolate(pointB, t);
             pFront.push(v);
             pBack.push(v.clone());
           }
