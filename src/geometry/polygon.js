@@ -1,4 +1,4 @@
-import Plane from './hyperPlane';
+import HyperPlane from './hyper-plane';
 
 const DFLT_WEBGL_MESH_CONFIG = {
   normals: true,
@@ -21,7 +21,7 @@ export default class Polygon {
     }
 
     // Construct a hyper-plane from the first 3 verticies
-    this.hyperPlane = Plane.build(
+    this.hyperPlane = HyperPlane.build(
       vertices[0].pos,
       vertices[1].pos,
       vertices[2].pos

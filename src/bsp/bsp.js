@@ -4,7 +4,6 @@ import BspNode from './bsp-node';
 export default class Bsp {
   constructor(polygons = []) {
     this.polygons = polygons || [];
-    
   }
 
   getPolygons = () => {
