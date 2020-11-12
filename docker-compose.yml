@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  bsp-ui:
+    container_name: bsp-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - './src:/main/src'
+    ports:
+      - 3000:3000
+    command: npm run start
+    environment:
+      - CHOKIDAR_USEPOLLING=true    

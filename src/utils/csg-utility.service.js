@@ -1,5 +1,4 @@
-import BspNode from '../bsp/bsp-node';
-import BspTree from '../bsp-tree';
+import { Bsp, BspNode } from '../bsp';
 
 const csgUtilityService = {
   flipPolygons: (polygons) => {

@@ -1,7 +1,7 @@
-import Polygon from '../bsp/polygon';
-import Vector from '../bsp/vector';
-import Vertex from '../bsp/vertex';
-import BspTree from '../bsp/bsp';
+import Polygon from './polygon';
+import Vector from './vector';
+import Vertex from './vertex';
+import { Bsp } from '../bsp';
 
 const CUBE_DEFAULTS = [
   [

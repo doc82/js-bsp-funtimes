@@ -1,7 +1,7 @@
 import BspNode from './bsp-node';
 import Bsp from './bsp';
 
-export default {
+export {
   BspNode,
   Bsp
 };

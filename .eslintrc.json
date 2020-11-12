@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": ["eslint:recommended", "prettier"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
   "plugins": ["prettier"],
   "env": {
     "browser": true,
@@ -14,10 +14,13 @@
   "ignorePatterns": ["dist/", "node_modules/"],
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": ["error"],
     "no-undef": "error",
     "no-console": "warn",
     "space-before-function-paren": 0,
@@ -28,6 +31,6 @@
     "class-methods-use-this": 0,
     "no-useless-catch": 1,
     "no-useless-computed-key": 1,
-    "import/no-cycle": 0
+    "import/no-cycle": 1
   }
 }

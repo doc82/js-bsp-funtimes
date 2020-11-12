@@ -40,7 +40,7 @@ export default class BspNode {
     let nBack = [];
 
     for (let i = 0; i < polygons.length; i += 1) {
-      plane.splitPolygon(polygons[i], nFront, nBack, nFront, nBack);
+      polygons[i].splitPolygon(plane, nFront, nBack, nFront, nBack);
     }
 
     if (front) nFront = front.clipPolygons(nFront);
@@ -74,14 +74,16 @@ export default class BspNode {
   // TODO: look into heuristics so we can pick a better split
   build = (polygons) => {
     if (!polygons.length) return;
+    if (!this.plane) this.plane = polygons[0].plane.clone();
     const front = [];
     const back = [];
 
-    if (!this.plane) this.plane = polygons[0].plane.clone();
+    const { plane } = this;
+  
 
     for (let i = 0; i < polygons.length; i += 1) {
-      this.plane.splitPolygon(
-        polygons[i],
+      polygons[i].splitPolygon(
+        plane,
         this.polygons,
         this.polygons,
         front,

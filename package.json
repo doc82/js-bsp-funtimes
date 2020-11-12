@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "BSP Tree experimentation",
   "main": "./src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/doc82/js-bsp-funtimes.git"
@@ -16,16 +13,56 @@
     "url": "https://github.com/doc82/js-bsp-funtimes/issues"
   },
   "homepage": "https://github.com/doc82/js-bsp-funtimes#readme",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development --open --hot --host 0.0.0.0",
+    "build": "webpack --config ./webpack.config.js",
+    "build:stats": "webpack --profile --json > dist/stats.json",
+    "build:inspect": "webpack-bundle-analyzer dist/stats.json --port 4200",
+    "build:memory": "export NODE_OPTIONS=--max_old_space_size=4096",
+    "lint": "eslint src",
+    "format": "prettier-eslint --write \"src/appV2/**/*.js\""
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "@babel/transform-runtime"
+    ]
+  },
+  "browserslist": [
+    "last 1 year",
+    "last 2 versions"
+  ],
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "circular-dependency-plugin": "^5.2.2",
     "eslint": "^7.12.1",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.1.2"
+    "eslint-plugin-react": "^7.21.5",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.5.0",
+    "prettier": "^2.1.2",
+    "raw-loader": "^4.0.2",
+    "webpack": "^5.3.2",
+    "webpack-bundle-analyzer": "^3.9.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.7.1"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-router-dom": "^5.2.0"
   }
 }
