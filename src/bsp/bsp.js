@@ -1,4 +1,4 @@
-import BspNode from './bsp-node';
+// import BspNode from './bsp-node';
 
 // TODO: bad memory management
 export default class Bsp {

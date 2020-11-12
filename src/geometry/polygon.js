@@ -5,6 +5,14 @@ const DFLT_WEBGL_MESH_CONFIG = {
   colors: true,
   defaultColor: [1, 1, 1]
 };
+//  The standard  solution is to make the plane "thick" by use of an epsilon value.
+const EPSILON = 1e-5;
+const POLY_CLASSES = {
+  COPLANAR: 0,
+  FRONT: 1,
+  BACK: 2,
+  SPANNING: 3
+};
 
 // The vertices  used to intialize the  polygon, must be coplanar and convex.
 // polygons that are clones of each other or were split from the same polygon.
@@ -123,13 +131,13 @@ export default class Polygon {
         (planeVector.dot(plane.planeVector) > 0
           ? coplanarFront
           : coplanarBack
-        ).push(polygon);
+        ).push(this);
         break;
       case POLY_CLASSES.FRONT:
-        front.push(polygon);
+        front.push(this);
         break;
       case POLY_CLASSES.BACK:
-        back.push(polygon);
+        back.push(this);
         break;
       case POLY_CLASSES.SPANNING:
         // Split the spanned polygon

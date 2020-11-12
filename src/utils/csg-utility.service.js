@@ -29,7 +29,7 @@ const csgUtilityService = {
     // add the remaining polygons in B into A
     a.build(b.getPolygons());
 
-    return new BspTree(a.getPolygons());
+    return new Bsp(a.getPolygons());
   },
 
   subtractTree: (bspInstanceA, bspInstanceB) => {
@@ -44,7 +44,7 @@ const csgUtilityService = {
     b.invert();
     a.build(b.getPolygons());
     a.invert();
-    return new BspTree(a.getPolygons());
+    return new Bsp(a.getPolygons());
   },
 
   intersectTree: (bspInstanceA, bspInstanceB) => {
@@ -58,7 +58,7 @@ const csgUtilityService = {
     a.clipTo(a);
     a.build(b.getPolygons());
     a.invert();
-    return new BspTree(a.getPolygons());
+    return new Bsp(a.getPolygons());
   }
 };
 

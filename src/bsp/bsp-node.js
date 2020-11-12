@@ -79,7 +79,6 @@ export default class BspNode {
     const back = [];
 
     const { plane } = this;
-  
 
     for (let i = 0; i < polygons.length; i += 1) {
       polygons[i].splitPolygon(

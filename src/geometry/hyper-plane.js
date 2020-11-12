@@ -1,12 +1,3 @@
-//  The standard  solution is to make the plane "thick" by use of an epsilon value.
-const EPSILON = 1e-5;
-const POLY_CLASSES = {
-  COPLANAR: 0,
-  FRONT: 1,
-  BACK: 2,
-  SPANNING: 3
-};
-
 // TODO: do we need to upgrade this to include additional information?
 export default class HyperPlane {
   constructor(planeVector, w) {

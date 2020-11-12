@@ -39,7 +39,7 @@ class Cube {
       ? options.radius
       : [options.radius, options.radius, options.radius];
 
-    this.cube = new BspTree(
+    this.cube = new Bsp(
       CUBE_DEFAULTS.map((info) => {
         // Create vertices
         const dd = info[0].map((i) => {
@@ -99,7 +99,7 @@ class Cylinder {
       );
     }
 
-    return new BspTree(polygons);
+    return new Bsp(polygons);
   }
 
   points = (
@@ -133,7 +133,7 @@ class Sphere {
     const { verticies, polygons } = this.build(slices, stacks, center, radius);
     this.verticies = verticies;
     this.polygons = polygons;
-    this.tree = new BspTree(polygons);
+    this.tree = new Bsp(polygons);
   }
 
   vertex = (theta, phi, center, radius) => {
