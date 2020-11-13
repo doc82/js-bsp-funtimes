@@ -156,6 +156,12 @@ export default class SceneManagerService {
     return gl.drawElements(gl.TRIANGLES, indicesLength, gl.UNSIGNED_SHORT, 0);
   };
 
+  /**
+   *
+   * @param {*} location - Location of a uniform-variabble from a WebGL program (getUniformLocation() is used for this)
+   * @param {*} matrix - Matrix 4fv to upload
+   * @param {*} transpose - Defaults to false
+   */
   uploadMatrix4fv = (location, matrix, transpose = false) => {
     const { gl } = this;
     return gl.uniformMatrix4fv(location, transpose, matrix);
