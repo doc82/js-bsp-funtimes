@@ -20,10 +20,13 @@ export default class BspNode {
   // Convert solid space to empty, and empty to solid
   invert = () => {
     const { polygons, plane, front, back } = this;
+
     for (let i = 0; i < polygons.length; i += 1) {
       polygons[i].flip();
     }
+
     plane.flip();
+
     if (front) front.invert();
     if (back) back.invert();
 
@@ -36,6 +39,7 @@ export default class BspNode {
   clipPolygons = () => {
     const { plane, polygons, front, back } = this;
     if (!plane) return polygons.slice();
+
     let nFront = [];
     let nBack = [];
 
@@ -74,11 +78,11 @@ export default class BspNode {
   // TODO: look into heuristics so we can pick a better split
   build = (polygons) => {
     if (!polygons.length) return;
-    if (!this.plane) this.plane = polygons[0].plane.clone();
+    const { plane } = this;
     const front = [];
     const back = [];
 
-    const { plane } = this;
+    if (!this.plane) this.plane = polygons[0].plane.clone();
 
     for (let i = 0; i < polygons.length; i += 1) {
       polygons[i].splitPolygon(

@@ -69,11 +69,13 @@ export default class Polygon {
       const { pos } = v;
       return [pos.x, pos.y, pos.z];
     });
+
     // get our vectors
     mesh.normals = glIndexer.unique.map((v) => {
       const { normal } = v;
       return [normal.x, normal.y, normal.z];
     });
+
     // and finally colors
     mesh.colors = glIndexer.unique.map((v) => {
       return v.color;

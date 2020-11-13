@@ -173,4 +173,4 @@ class Sphere {
   };
 }
 
-export default { Cube, Cylinder, Sphere };
+export { Cube, Cylinder, Sphere };
