@@ -36,7 +36,7 @@ export default class BspNode {
   };
 
   //  Recursively remove lal polygons that are inside this bsp tree
-  clipPolygons = () => {
+  clipModels = () => {
     const { plane, polygons, front, back } = this;
     if (!plane) return polygons.slice();
 
@@ -44,30 +44,30 @@ export default class BspNode {
     let nBack = [];
 
     for (let i = 0; i < polygons.length; i += 1) {
-      polygons[i].splitPolygon(plane, nFront, nBack, nFront, nBack);
+      polygons[i].splitModel(plane, nFront, nBack, nFront, nBack);
     }
 
-    if (front) nFront = front.clipPolygons(nFront);
+    if (front) nFront = front.clipModels(nFront);
     if (back) {
-      nBack = back.clipPolygons(nBack);
+      nBack = back.clipModels(nBack);
     } else nBack = [];
 
     return nFront.concat(nBack);
   };
 
   clipTo = (bspInstance) => {
-    this.polygons = bspInstance.clipPolygons(this.polygons);
+    this.polygons = bspInstance.clipModels(this.polygons);
 
     if (this.front) this.front.clipTo(bspInstance);
     if (this.back) this.back.clipTo(bspInstance);
   };
 
-  getPolygons = () => {
+  getModels = () => {
     const { front, back } = this;
     let polygons = this.polygons.slice();
 
-    if (front) polygons = polygons.concat(front.getPolygons());
-    if (back) polygons = polygons.concat(back.getPolygons());
+    if (front) polygons = polygons.concat(front.getModels());
+    if (back) polygons = polygons.concat(back.getModels());
 
     return polygons;
   };
@@ -85,7 +85,7 @@ export default class BspNode {
     if (!this.plane) this.plane = polygons[0].plane.clone();
 
     for (let i = 0; i < polygons.length; i += 1) {
-      polygons[i].splitPolygon(
+      polygons[i].splitModel(
         plane,
         this.polygons,
         this.polygons,

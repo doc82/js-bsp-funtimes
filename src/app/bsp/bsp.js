@@ -6,7 +6,7 @@ export default class Bsp {
     this.polygons = polygons || [];
   }
 
-  getPolygons = () => {
+  getModels = () => {
     return this.polygons;
   };
 }

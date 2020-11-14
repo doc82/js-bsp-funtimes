@@ -15,7 +15,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    // List of Polygons
+    // List of Models
     this.scene = [];
     this.sceneManager = null;
     this.sceneManager = new SceneManagerService(

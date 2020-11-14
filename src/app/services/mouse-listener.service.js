@@ -37,14 +37,14 @@ export class MouseListener {
     const { clientX = 0, clientY = 0 } = e;
     this.mouseX = clientX;
     this.mouseY = clientY;
-    drag = true;
+    this.drag = true;
   };
 
   handleOnMouseUp = () => {
     this.drag = false;
   };
 
-  handleOnMouseMove = () => {
+  handleOnMouseMove = (e) => {
     if (this.drag) {
       const { mouseX, mouseY, dragListeners } = this;
       const { clientX, clientY } = e;

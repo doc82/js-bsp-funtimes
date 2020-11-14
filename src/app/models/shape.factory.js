@@ -1,4 +1,4 @@
-import Polygon from './polygon';
+import Model from './polygon';
 import Vector from './vector';
 import Vertex from './vertex';
 import { Bsp } from '../bsp';
@@ -51,7 +51,7 @@ class Cube {
           return new Vertex(pos, new Vector(info[1]));
         });
 
-        return new Polygon(dd);
+        return new Model(dd);
       })
     );
   }
@@ -76,14 +76,14 @@ class Cylinder {
       var t0 = i / slices,
         t1 = (i + 1) / slices;
       polygons.push(
-        new Polygon([
+        new Model([
           start,
           this.point(0, t0, -1, axisX, axisY, axisZ, s, radius, ray),
           this.point(0, t1, -1, axisX, axisY, axisZ, s, radius, ray)
         ])
       );
       polygons.push(
-        new Polygon([
+        new Model([
           this.point(0, t1, 0, axisX, axisY, axisZ, s, radius, ray),
           this.point(0, t0, 0, axisX, axisY, axisZ, s, radius, ray),
           this.point(1, t0, 0, axisX, axisY, axisZ, s, radius, ray),
@@ -91,7 +91,7 @@ class Cylinder {
         ])
       );
       polygons.push(
-        new Polygon([
+        new Model([
           end,
           this.point(1, t1, 1, axisX, axisY, axisZ, s, radius, ray),
           this.point(1, t0, 1, axisX, axisY, axisZ, s, radius, ray)
@@ -165,7 +165,7 @@ class Sphere {
           );
 
         vertices.push(vertex(i / slices, (j + 1) / stacks, center, radius));
-        polygons.push(new Polygon(vertices));
+        polygons.push(new Model(vertices));
       }
     }
 

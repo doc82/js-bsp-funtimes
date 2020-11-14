@@ -1,3 +1,8 @@
+/**
+ * Stores all critical information for rendering/accessing an instance of a 3D Model
+ *
+ */
+
 import HyperPlane from './hyper-plane';
 
 const DFLT_WEBGL_MESH_CONFIG = {
@@ -14,14 +19,26 @@ const POLY_CLASSES = {
   SPANNING: 3
 };
 
-// The vertices  used to intialize the  polygon, must be coplanar and convex.
-// polygons that are clones of each other or were split from the same polygon.
-// Requires a minimum of 3 verticies
-export default class Polygon {
-  // TODO: Add additional properties that will assist the renderer (Textures, meshes, color, etc......)
-  constructor(vertices, parent = null, mesh = null, color = null) {
+export default class Model {
+  /**
+   *
+   * @param {*} vertices
+   * @param {*} parent
+   * @param {*} mesh
+   * @param {*} color
+   * @param {*} textureCoords
+   */
+  constructor(
+    vertices,
+    textureCoords,
+    parent = null,
+    mesh = null,
+    color = null
+  ) {
     this.vertices = vertices;
+    this.textureCoords = textureCoords || null;
     this.color = color || null;
+    this.indices = null;
     this.mesh = null;
 
     if (!vertices.length || vertices.length < 3) {
@@ -40,12 +57,35 @@ export default class Polygon {
       this.parent = parent;
       this.shared = true;
     }
+
     this.mesh = mesh;
     if (!mesh) {
-      this.mesh = this.generateMesh();
+      const { mesh, indices } = this.generateMesh();
+      this.mesh = mesh;
+      this.indices = indices;
+      this.normals = mesh.normals;
     }
   }
 
+  /**
+   *
+   */
+  clone = () => {
+    const verticies = this.verticies.map((v) => v.clone());
+    return new Model(verticies, this.parent);
+  };
+
+  /**
+   *
+   */
+  flip = () => {
+    this.vertices.reverse().map((v) => v.flip());
+    this.hyperPlane.flip();
+  };
+
+  /**
+   *
+   */
   generateMesh = () => {
     const { vertices, color } = this;
     const { normals, colors } = DFLT_WEBGL_MESH_CONFIG;
@@ -84,24 +124,21 @@ export default class Polygon {
     // calculate wireframe indexer stream for this mesh
     mesh.computeWireframe();
 
-    return mesh;
-  };
-
-  clone = () => {
-    const verticies = this.verticies.map((v) => v.clone());
-    return new Polygon(verticies, this.parent);
-  };
-
-  // Flip the verticies
-  flip = () => {
-    this.vertices.reverse().map((v) => v.flip());
-    this.hyperPlane.flip();
+    return { mesh, indices };
   };
 
   // Split a polygon by a plane, then organize these split-fragments by orientation to the plane
   // This handles the coplanar edge-case by splitting the polygon,
   //  linking-them and re-inserting into coPlaner front/back array
-  splitPolygon = (plane, coplanarFront, coplanarBack, front, back) => {
+  /**
+   *
+   * @param {*} plane
+   * @param {*} coplanarFront
+   * @param {*} coplanarBack
+   * @param {*} front
+   * @param {*} back
+   */
+  splitModel = (plane, coplanarFront, coplanarBack, front, back) => {
     const { vertices } = this;
     const { planeVector, w } = plane;
     // The list of polygon-types we find from each of the verticies of this polygon
@@ -177,8 +214,8 @@ export default class Polygon {
         }
 
         // Clone the coplanar verticies, and keep a pointer back to the parent
-        if (front.length >= 3) front.push(new Polygon(front, this));
-        if (back.length >= 3) back.push(new Polygon(back, this));
+        if (front.length >= 3) front.push(new Model(front, this));
+        if (back.length >= 3) back.push(new Model(back, this));
         break;
       default:
         break;
