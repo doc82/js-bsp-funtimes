@@ -1,55 +1,23 @@
-export default class SceneManagerService {
-  constructor(canvasId, polygons, width, height, depth) {
-    this.depthBuffer = false;
-    this.width = width;
-    this.height = height;
-    this.depth = depth;
-    this.polygons = polygons;
-    this.canvas = document.querySelector(`#${canvasId}`);
-    this.gl = this.createContext(width, height);
-  }
+import { vec3, mat4 } from 'gl-matrix';
+import { toRadians } from '../utils/math';
 
-  // Generate a fresh WebGl context
-  createContext = (width, height) => {
-    const { canvas } = this;
-    const gl = canvas.getContext('webgl');
-    gl.canvas.width = width;
-    gl.canvas.height = height;
-    gl.viewport(0, 0, width, height);
-    return gl;
+class WeblglManagerService {
+  constructor() {}
+  toRadians = (deg) => deg * (Math.PI / 180);
+
+  createTransformationMatrix = (x, y, z, rx, ry, rz, scale) => {
+    const matrix = [];
+    mat4.identity(matrix);
+    mat4.translate(matrix, matrix, vec3.fromValues(x, y, z));
+    mat4.rotateX(matrix, matrix, toRadians(rx));
+    mat4.rotateY(matrix, matrix, toRadians(ry));
+    mat4.rotateZ(matrix, matrix, toRadians(rz));
+    mat4.scale(matrix, matrix, vec3.fromValues(scale, scale, scale));
+    return matrix;
   };
 
-  updateScene = (polgygons) => {
-    this.polygons = polgygons;
-  };
-
-  onRender = () => {
-    const { gl } = this;
-
-    gl.ondraw();
-  };
-
-  // Set webGL viewport to canvas dimensions
-  viewport = () => {
-    const { gl } = this;
-    const { canvas } = gl;
-    gl.viewport(0, 0, canvas.width, canvas.height);
-  };
-
-  // Clear the view
-  clearView = (r, g, b, a) => {
-    const { gl } = this;
-    gl.clearColor(r, g, b, a);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-  };
-
-  // Helps make sure we render the proper triangles based on Z
-  // This is disabled by default, and once enabled automatically stores Z-info into the depth buffer
-  depthTest = (enable) => {
-    const { gl } = this;
-    if (enable) {
-      gl.enable(gl.DEPTH_TEST);
-    } else gl.disable(gl.DEPTH_TEST);
+  init = (gl) => {
+    this.gl = gl;
   };
 
   // Buffer fun!
@@ -61,7 +29,7 @@ export default class SceneManagerService {
     return buff;
   };
 
-  // INT Buffers - for use with indices (the labels assigned to verticies for WebGL)
+  // INT Buffers - for use with indices (the labels assigned to vertices for WebGL)
   bindIntBuffer = (buffer) => {
     const { gl } = this;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
@@ -151,7 +119,7 @@ export default class SceneManagerService {
   };
 
   // Draw fun!
-  drawFromTriangles = (indicesLength) => {
+  drawTrinagles = (indicesLength) => {
     const { gl } = this;
     return gl.drawElements(gl.TRIANGLES, indicesLength, gl.UNSIGNED_SHORT, 0);
   };
@@ -176,4 +144,55 @@ export default class SceneManagerService {
     const { gl } = this;
     return gl.getUniformLocation(prog, uniform);
   };
+  uploadVec3f = (prog, uniform) => {
+    const { gl } = this;
+    return gl.getUniformLocation(prog, uniform);
+  };
+  uploadFloat = (prog, uniform) => {
+    const { gl } = this;
+    return gl.getUniformLocation(prog, uniform);
+  };
+  uploadInt = (prog, uniform) => {
+    const { gl } = this;
+    return gl.getUniformLocation(prog, uniform);
+  };
+  uploadBool = (prog, uniform) => {
+    const { gl } = this;
+    return gl.getUniformLocation(prog, uniform);
+  };
+
+  createTexture = () => {
+    const { gl } = this;
+    return gl.getUniformLocation();
+  };
+
+  bindTexture = (texture) => {
+    const { gl } = this;
+    return gl.bindTexture(gl.TEXTURE0, texture);
+  };
+
+  activeTexture = (texture) => {
+    const { gl } = this;
+    return gl.activeTexture(gl.TEXTURE0 + texture);
+  };
+
+  defineTexture = (img) => {
+    const { gl } = this;
+    return gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      img
+    );
+  };
+
+  textureMipmap2d = () => {
+    const { gl } = this;
+    return gl.generateMipmap(gl.TEXTURE_2D);
+  };
 }
+
+const webGlManagerService = new WeblglManagerService();
+export default webGlManagerService;

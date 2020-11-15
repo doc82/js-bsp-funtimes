@@ -1,5 +1,6 @@
 import { vec3, mat4 } from 'gl-matrix';
 import mouseService from './mouse-listener.service';
+import { toRadians } from '../services/webgl-manager.service';
 
 const CAMERA_OPTIONS = {
   acclX: 0.01,
@@ -52,10 +53,10 @@ export class Camera {
 
   buildMatrix = () => {
     this.projectionMatrix = this.buildProjectionMatrix();
-    this.viewMatrix = this.buildViewMatrix();
+    this.viewMatrix = this.buildTransformationMatrix();
   };
 
-  buildViewMatrix = () => {
+  buildTransformationMatrix = () => {
     const matrix = [];
     mat4.identity(matrix);
     mat4.rotateX(matrix, matrix, toRadians(this.pitch));
