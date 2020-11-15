@@ -1,3 +1,7 @@
+import ModelInstance from './models/model-instance';
+import Camera from './services/camera.service';
+import Light from './services/light.service';
+
 export default class SceneManagerService {
   constructor(canvasId, models, width, height, depth) {
     this.depthBuffer = false;
@@ -19,14 +23,29 @@ export default class SceneManagerService {
     return gl;
   };
 
-  updateScene = (polgygons) => {
-    this.models = polgygons;
+  createModelInstance = (
+    model,
+    xyz = { x: 0, y: 0, z: 0 },
+    rxyz = { rx: 0, ry: 0, rz: 0 },
+    scale = 1
+  ) => {
+    return new ModelInstance(model, xyz, rxyz, scale);
   };
 
+  // TODO: FIX ME
   onRender = () => {
     const { gl } = this;
 
-    gl.ondraw();
+    this.viewport();
+    this.depthTest(true);
+    this.shader.init();
+    this.shader.enableLight(light);
+    camera.enable(this.shader);
+    this.models.each((model) => {
+      model.applyShader(shader);
+      shader.enableTransformationMatrix(model.modelClass.getMatrix());
+      gl.drawTriangles(model.modelClass.indices.length);
+    });
   };
 
   // Set webGL viewport to canvas dimensions
