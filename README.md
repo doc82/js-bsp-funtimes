@@ -5,6 +5,7 @@ The goal of this project is to build a BSP from scratch in 2020 JS snytax for us
 
 # Random References to BSP
 * http://www.gamers.org/dhs/helpdocs/bsp_faq.html
+* https://github.com/evanw/csg.js
 * https://github.com/ivanelianto/Binary-Space-Partitioning-Algorithm
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/G46.pdf
 * https://www.researchgate.net/publication/238348725_A_Tutorial_on_Binary_Space_Partitioning_Trees
