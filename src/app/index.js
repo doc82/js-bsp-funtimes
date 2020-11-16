@@ -6,5 +6,5 @@ ReactDOM.render(
   <Fragment>
     <App />
   </Fragment>,
-  document.getElementById('kanoogi-root')
+  document.getElementById('bsp-root')
 );

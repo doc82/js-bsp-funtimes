@@ -1,7 +1,7 @@
 import Texture from './texture';
 import webMgrSvc from '../services/webgl-manager.service';
 
-class Material {
+export default class Material {
   /**
    * Material represents a texture instance with capability to apply shader
    * @param {*} textureUrl - Relative path to the texture asset
@@ -23,5 +23,3 @@ class Material {
     webMgrSvc.uploadBool(shader.hasDiffuseTexture, !!texture.loaded);
   };
 }
-
-export { Material, Texture };

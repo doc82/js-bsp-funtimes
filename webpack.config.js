@@ -23,7 +23,7 @@ const webpackConfig = {
   },
   optimization: {
     runtimeChunk: 'single', // enable "runtime" chunk
-    emitOnErrors: true,
+    // emitOnErrors: true,
     minimize: false,
     minimizer: [],
     splitChunks: {

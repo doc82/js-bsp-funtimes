@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 // import PropTypes from 'prop-types';
 import ModelFactory from './models/model.factory';
-import SceneManagerService from './scene-manager.service';
+import SceneManagerService from './scene-manager';
 import WebGL from './components/WebGL.jsx';
-import WebGlManagerService from './services/webgl-manager.service';
+import modelRegistry from './models/model.registry.js';
 
 const DEFAULT_CONFIG = {
   width: 500,
@@ -14,25 +14,35 @@ const DEFAULT_CONFIG = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+  }
 
-    // List of Model-classes to toss into the scene
-    // TODO: is this even the right spot to put this? maybe a singleton "model manager service thingymabob"
-    this.modelRegistry = {};
-    this.sceneManager = null;
-    this.sceneManager = new SceneManagerService(
+  componentDidMount() {
+    const id = 'bruceCube';
+    const sceneManager = new SceneManagerService(
+      'js-bsp-funtimes',
       this.models,
       DEFAULT_CONFIG.width,
       DEFAULT_CONFIG.height,
       DEFAULT_CONFIG.depth
     );
-    WebGlManagerService.init(this.sceneManager.gl);
+    modelRegistry.registerModelClass(id, ModelFactory.generateBruceCube());
+    sceneManager.addModelInstance(
+      id,
+      { x: 0, y: 0, z: 0 },
+      { rx: 0, ry: 0, rz: 0 },
+      0.4
+    );
+
+    this.sceneManager = sceneManager;
+    // Kick-off the animation loop
+    window.requestAnimationFrame(this.triggerWebglRender);
   }
 
-  componentDidMount() {
-    // Create a the-goat cube
-    this.modelRegistry['cube'] = ModelFactory.generateBruceCube();
-    this.sceneManager.updateScene(this.models);
-  }
+  triggerWebglRender = () => {
+    const { sceneManager } = this;
+    sceneManager.onRender();
+    window.requestAnimationFrame(this.triggerWebglRender);
+  };
 
   render() {
     return (

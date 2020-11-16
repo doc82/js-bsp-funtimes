@@ -1,4 +1,5 @@
-import { createTransformationMatrix } from '../services/webgl-manager.service';
+import webglMgrSvc from '../services/webgl-manager.service';
+const { createTransformationMatrix } = webglMgrSvc;
 
 export default class ModelInstance {
   /**

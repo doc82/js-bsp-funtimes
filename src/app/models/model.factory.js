@@ -135,7 +135,7 @@ export default {
       indices,
       normals,
       textureCoords,
-      '../assets/images/goat.jps',
+      './assets/images/goat.jps',
       vertices
     );
     return bruceCube;

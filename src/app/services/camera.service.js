@@ -1,16 +1,16 @@
 import { vec3, mat4 } from 'gl-matrix';
 import mouseService from './mouse-listener.service';
-import { toRadians } from '../services/webgl-manager.service';
+import webglMgrService from '../services/webgl-manager.service';
 
 const CAMERA_OPTIONS = {
   acclX: 0.01,
   acclY: 0.1,
   acclZ: 0.1
 };
+const { toRadians } = webglMgrService;
 
-export class Camera {
+export default class Camera {
   constructor(
-    sceneManager,
     x = 0,
     y = 0,
     z = 3,
@@ -21,7 +21,6 @@ export class Camera {
     far = 1000,
     fov = 40
   ) {
-    this.sceneManager = sceneManager;
     this.camX = x;
     this.camY = y;
     this.camZ = z;
@@ -31,6 +30,9 @@ export class Camera {
     this.camNear = near;
     this.camFar = far;
     this.camFov = fov;
+    debugger;
+    this.projectionMatrix = this.buildProjectionMatrix();
+    this.viewMatrix = this.buildTransformationMatrix();
 
     // TODO: we want WASD keyboard next!
     // Listen to drag/wheel events!
@@ -67,11 +69,17 @@ export class Camera {
   };
 
   buildProjectionMatrix = () => {
-    const { sceneManager, fov, near, far } = this;
-    const { canvas } = sceneManager.gl;
+    const { fov, near, far } = this;
+    const { gl } = webglMgrService;
     const matrix = [];
-    const aspectRatio = canvas.width / canvas.height;
+    const aspectRatio = gl.canvas.width / gl.canvas.height;
     mat4.perspective(matrix, toRadians(fov), aspectRatio, near, far);
     return matrix;
+  };
+
+  apply = (shader) => {
+    debugger;
+    const { viewMatrix, projectionMatrix } = this;
+    shader.applyViewProjectionMatrices(viewMatrix, projectionMatrix);
   };
 }

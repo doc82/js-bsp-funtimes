@@ -1,4 +1,4 @@
-export class MouseListener {
+class MouseListener {
   constructor() {
     this.wheelListeners = [];
     this.dragListeners = [];
@@ -17,11 +17,11 @@ export class MouseListener {
     }
   };
 
-  attachEvents = (gl) => {
-    gl.canvas.onwheel = this.handleOnWheel;
-    gl.canvas.onmousedown = this.handleOnMouseDown;
-    gl.canvas.onmouseup = this.handleOnMouseUp;
-    gl.canvas.onmousemove = this.handleOnMouseMove;
+  attachEvents = (canvas) => {
+    canvas.onwheel = this.handleOnWheel;
+    canvas.onmousedown = this.handleOnMouseDown;
+    canvas.onmouseup = this.handleOnMouseUp;
+    canvas.onmousemove = this.handleOnMouseMove;
   };
 
   handleOnWheel = (e) => {
@@ -64,3 +64,6 @@ export class MouseListener {
     }
   };
 }
+
+const mouseService = new MouseListener();
+export default mouseService;

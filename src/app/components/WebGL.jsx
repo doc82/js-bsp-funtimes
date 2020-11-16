@@ -5,7 +5,7 @@ function WebGL(props) {
   return (
     <Fragment>
       <canvas
-        id="webgl"
+        id="js-bsp-funtimes"
         width={props.width || 400}
         height={props.height || 400}
         style={props.style || { border: '1px solid black' }}

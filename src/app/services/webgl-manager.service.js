@@ -1,11 +1,13 @@
 import { vec3, mat4 } from 'gl-matrix';
-import { toRadians } from '../utils/math';
 
 class WeblglManagerService {
-  constructor() {}
+  constructor() {
+    this.gl = null;
+  }
   toRadians = (deg) => deg * (Math.PI / 180);
 
   createTransformationMatrix = (x, y, z, rx, ry, rz, scale) => {
+    const { toRadians } = this;
     const matrix = [];
     mat4.identity(matrix);
     mat4.translate(matrix, matrix, vec3.fromValues(x, y, z));
@@ -72,7 +74,7 @@ class WeblglManagerService {
     const { gl } = this;
     return gl.createShader(gl.VERTEX_SHADER);
   };
-  attachShaderSource = (shader, source) => {
+  addShaderSource = (shader, source) => {
     const { gl } = this;
     return gl.shaderSource(shader, source);
   };
@@ -144,26 +146,29 @@ class WeblglManagerService {
     const { gl } = this;
     return gl.getUniformLocation(prog, uniform);
   };
-  uploadVec3f = (prog, uniform) => {
+  uploadVec3f = (location, theVec3) => {
     const { gl } = this;
-    return gl.getUniformLocation(prog, uniform);
+    return gl.uniform3fv(location, theVec3);
   };
-  uploadFloat = (prog, uniform) => {
+  uploadFloat = (location, value) => {
     const { gl } = this;
-    return gl.getUniformLocation(prog, uniform);
+    return gl.uniform1f(location, value);
   };
-  uploadInt = (prog, uniform) => {
+  uploadInt = (location, value) => {
     const { gl } = this;
-    return gl.getUniformLocation(prog, uniform);
+    return gl.uniform1i(location, value);
   };
-  uploadBool = (prog, uniform) => {
+  uploadBool = (location, value) => {
     const { gl } = this;
-    return gl.getUniformLocation(prog, uniform);
+    return gl.uniform1i(location, value ? 1 : 0);
   };
 
+  /**
+   * Create the texture
+   */
   createTexture = () => {
     const { gl } = this;
-    return gl.getUniformLocation();
+    return gl.createTexture();
   };
 
   bindTexture = (texture) => {
