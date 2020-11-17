@@ -28,7 +28,7 @@ class MouseListener {
     const { wheelListeners } = this;
     if (wheelListeners.length) {
       for (let i = 0; i < wheelListeners.length; i += 1) {
-        wheelListeners[i].onWheel(e);
+        wheelListeners[i](e);
       }
     }
   };
