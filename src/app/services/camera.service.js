@@ -21,21 +21,17 @@ export default class Camera {
     far = 1000,
     fov = 40
   ) {
-    this.camX = x;
-    this.camY = y;
-    this.camZ = z;
-    this.camPitch = pitch;
-    this.camRoll = roll;
-    this.camYaw = yaw;
-    this.camNear = near;
-    this.camFar = far;
-    this.camFov = fov;
-    debugger;
-    this.projectionMatrix = this.buildProjectionMatrix();
-    this.viewMatrix = this.buildTransformationMatrix();
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.pitch = pitch;
+    this.roll = roll;
+    this.yaw = yaw;
+    this.near = near;
+    this.far = far;
+    this.fov = fov;
+    this.buildMatrix();
 
-    // TODO: we want WASD keyboard next!
-    // Listen to drag/wheel events!
     mouseService.subscribe({
       wheelListener: this.handleWheel,
       dragListener: this.handleDrag
@@ -43,13 +39,13 @@ export default class Camera {
   }
 
   handleDrag = (dX, dY) => {
-    this.camX += dX * CAMERA_OPTIONS.acclX;
-    this.camY -= dY * CAMERA_OPTIONS.acclY;
+    this.x += dX * CAMERA_OPTIONS.acclX;
+    this.y -= dY * CAMERA_OPTIONS.acclY;
     this.buildMatrix();
   };
 
   handleWheel = (e) => {
-    this.camZ += e.deltaY * CAMERA_OPTIONS.acclZ;
+    this.z += e.deltaY * CAMERA_OPTIONS.acclZ;
     this.buildMatrix();
   };
 
@@ -59,12 +55,13 @@ export default class Camera {
   };
 
   buildTransformationMatrix = () => {
+    const { pitch, yaw, roll, x, y, z } = this;
     const matrix = [];
     mat4.identity(matrix);
-    mat4.rotateX(matrix, matrix, toRadians(this.pitch));
-    mat4.rotateY(matrix, matrix, toRadians(this.yaw));
-    mat4.rotateZ(matrix, matrix, toRadians(this.roll));
-    mat4.translate(matrix, matrix, vec3.fromValues(-this.x, -this.y, -this.z));
+    mat4.rotateX(matrix, matrix, toRadians(pitch));
+    mat4.rotateY(matrix, matrix, toRadians(yaw));
+    mat4.rotateZ(matrix, matrix, toRadians(roll));
+    mat4.translate(matrix, matrix, vec3.fromValues(-x, -y, -z));
     return matrix;
   };
 
@@ -78,7 +75,6 @@ export default class Camera {
   };
 
   apply = (shader) => {
-    debugger;
     const { viewMatrix, projectionMatrix } = this;
     shader.applyViewProjectionMatrices(viewMatrix, projectionMatrix);
   };

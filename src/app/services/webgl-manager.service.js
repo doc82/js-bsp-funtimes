@@ -115,13 +115,13 @@ class WeblglManagerService {
    * @param {*} index - specifying the index of the vertex attribute that is to be modified.
    * @param {*} size - specifying the number of components per vertex attribute. Must be 1, 2, 3, or 4.
    */
-  configVertexAttrb = (index, size) => {
+  pointToAttribute = (index, size) => {
     const { gl } = this;
     gl.vertexAttribPointer(index, size, gl.FLOAT, false, 0, 0);
   };
 
   // Draw fun!
-  drawTrinagles = (indicesLength) => {
+  drawElements = (indicesLength) => {
     const { gl } = this;
     return gl.drawElements(gl.TRIANGLES, indicesLength, gl.UNSIGNED_SHORT, 0);
   };
@@ -173,7 +173,7 @@ class WeblglManagerService {
 
   bindTexture = (texture) => {
     const { gl } = this;
-    return gl.bindTexture(gl.TEXTURE0, texture);
+    return gl.bindTexture(gl.TEXTURE_2D, texture);
   };
 
   activeTexture = (texture) => {
@@ -181,6 +181,21 @@ class WeblglManagerService {
     return gl.activeTexture(gl.TEXTURE0 + texture);
   };
 
+  definePlaceHolderTexture = () => {
+    const { gl } = this;
+    const { TEXTURE_2D, RGBA, UNSIGNED_BYTE } = gl;
+    return gl.texImage2D(
+      TEXTURE_2D,
+      0,
+      RGBA,
+      1,
+      1,
+      0,
+      RGBA,
+      UNSIGNED_BYTE,
+      new Uint8Array([0, 0, 255, 255])
+    );
+  };
   defineTexture = (img) => {
     const { gl } = this;
     return gl.texImage2D(

@@ -17,8 +17,8 @@ export default class Material {
    */
   applyShader = (shader) => {
     const { texture } = this;
-    // TODO: Do we need to re-bind the texture into the GPU on every frame, or only on load in the constructor?
-    webMgrSvc.activeTexture(texture);
+    webMgrSvc.activeTexture(0);
+    texture.bindTexture();
     webMgrSvc.uploadInt(shader.diffuseTexture, 0);
     webMgrSvc.uploadBool(shader.hasDiffuseTexture, !!texture.loaded);
   };

@@ -39,7 +39,16 @@ export default class Model {
     if (!vertices.length || vertices.length < 3) {
       throw new Error('Cannot construct a polygon with less than 3 vertices');
     }
+    // Initalize the buffers for this model-class!
+    this.init();
   }
+
+  init = () => {
+    this.generateTextureBuffer();
+    this.generateNormalBuffer();
+    this.generateVertexBuffer();
+    this.genreateIndexBuffer();
+  };
 
   generateTextureBuffer = () => {
     const { textureCoords } = this;
@@ -50,18 +59,20 @@ export default class Model {
   };
 
   generateNormalBuffer = () => {
-    const { textureCoords } = this;
-    this.textureBuffer = webGlManagerService.createBuffer();
-    webGlManagerService.bindFloatBuffer(this.textureBuffer);
-    webGlManagerService.addElementFloatBuffer(textureCoords);
-    webGlManagerService.unbindFloatBuffer();};
+    const { normals } = this;
+    this.normalsBuffer = webGlManagerService.createBuffer();
+    webGlManagerService.bindFloatBuffer(this.normalsBuffer);
+    webGlManagerService.addElementFloatBuffer(normals);
+    webGlManagerService.unbindFloatBuffer();
+  };
 
   generateVertexBuffer = () => {
     const { textureCoords } = this;
     this.vertexBuffer = webGlManagerService.createBuffer();
     webGlManagerService.bindFloatBuffer(this.vertexBuffer);
     webGlManagerService.addElementFloatBuffer(textureCoords);
-    webGlManagerService.unbindFloatBuffer();};
+    webGlManagerService.unbindFloatBuffer();
+  };
 
   genreateIndexBuffer = () => {
     const { vertices } = this;
@@ -80,11 +91,11 @@ export default class Model {
       indexBuffer
     } = this;
     webGlManagerService.bindFloatBuffer(vertexBuffer);
-    shader.enablePosition();
+    shader.applyPosition();
     webGlManagerService.bindFloatBuffer(textureBuffer);
-    shader.enableTexture();
+    shader.applyTextureCoords();
     webGlManagerService.bindFloatBuffer(normalsBuffer);
-    shader.enableNormals();
+    shader.applyNormals();
     webGlManagerService.addElementFloatBuffer(indexBuffer);
     material.applyShader(shader);
   };

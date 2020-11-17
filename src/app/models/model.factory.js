@@ -1,5 +1,8 @@
 /* eslint-disable prettier/prettier */
 import Model from './model';
+import imgLibrary from '../assets/images';
+
+const { GOAT } = imgLibrary;
 const vertices = [
   // Front 
   -1.0, -1.0,  1.0,
@@ -135,7 +138,7 @@ export default {
       indices,
       normals,
       textureCoords,
-      './assets/images/goat.jps',
+      GOAT,
       vertices
     );
     return bruceCube;

@@ -54,7 +54,7 @@ export default class SceneManagerService {
 
   // TODO: FIX ME
   onRender = () => {
-    const { camera, lightSource, gl, shader } = this;
+    const { camera, lightSource, shader, models } = this;
 
     this.clearView(1.0, 1.0, 1.0, 1.0);
     this.viewport();
@@ -62,11 +62,20 @@ export default class SceneManagerService {
     shader.applyShader();
     shader.applyLight(lightSource);
     camera.apply(shader);
-    this.models.each((model) => {
-      model.applyShader(shader);
-      shader.enableTransformationMatrix(model.modelClass.getMatrix());
-      gl.drawTriangles(model.modelClass.indices.length);
-    });
+    for (let i = 0; i < models.length; i += 1) {
+      const model = models[i];
+      const { modelClass } = model;
+      // This gets the model info (textures/poly info) and passes it into the shader context thingy mabob
+      // TODO: what is a shader-context thingy mabob?
+      modelClass.applyShader(shader);
+      // Build position matrix from the model-instance
+      // TODO: get battter at this math
+      shader.applyTransformationMatrix(model.getMatrix());
+      debugger;
+
+      // Woooooo, all this work for this one call to rule them all
+      WebGlManagerService.drawElements(modelClass.indices.length);
+    }
   };
 
   // Set webGL viewport to canvas dimensions

@@ -4,6 +4,9 @@ export default class Texture {
   constructor() {
     this.texture = webGlManagerService.createTexture();
     this.loaded = false;
+    // This places a temporary texture into the webGL context for immediate use while we wait for async load to occur
+    this.bindTexture();
+    webGlManagerService.definePlaceHolderTexture();
   }
 
   loadTexture = (url) => {
@@ -21,5 +24,9 @@ export default class Texture {
     webGlManagerService.bindTexture(this.texture);
     webGlManagerService.defineTexture(img);
     this.loaded = true;
+  };
+
+  bindTexture = () => {
+    webGlManagerService.bindTexture(this.texture);
   };
 }

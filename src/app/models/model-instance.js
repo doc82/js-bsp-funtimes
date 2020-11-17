@@ -21,6 +21,8 @@ export default class ModelInstance {
     this.rx = rx;
     this.ry = ry;
     this.rz = rz;
+
+    this.setMatrix();
   }
 
   /**
@@ -33,12 +35,15 @@ export default class ModelInstance {
     this.rx += rx;
     this.ry += ry;
     this.rz += rz;
+    this.setMatrix();
   };
 
   /**
    * Matrix get/setter based on current x,y,z, rotation on xyz, and scale
    */
-  getMatrix = () => this.tMatrix;
+  getMatrix = () => {
+    return this.tMatrix;
+  };
   setMatrix = () => {
     const { x, y, z, rx, ry, rz, scale } = this;
     this.tMatrix = createTransformationMatrix(x, y, z, rx, ry, rz, scale);

@@ -75,25 +75,25 @@ export default class ShaderService {
 
   applyTextureCoords = () => {
     const { textureCoordsAttribute } = this;
-    webglService.applyVertexAttribArray(textureCoordsAttribute);
+    webglService.enableVertexAttrb(textureCoordsAttribute);
     webglService.pointToAttribute(textureCoordsAttribute, 2);
   };
 
   applyPosition = () => {
     const { positionAttribute } = this;
-    webglService.applyVertexAttribArray(positionAttribute);
+    webglService.enableVertexAttrb(positionAttribute);
     webglService.pointToAttribute(positionAttribute, 3);
+  };
+
+  applyNormals = () => {
+    const { normalAttribute } = this;
+    webglService.enableVertexAttrb(normalAttribute);
+    webglService.pointToAttribute(normalAttribute, 3);
   };
 
   applyShader = () => {
     const { prog } = this;
     webglService.useProg(prog);
-  };
-
-  applyNormals = () => {
-    const { normalAttribute } = this;
-    webglService.applyVertexAttribArray(normalAttribute);
-    webglService.pointToAttribute(normalAttribute, 3);
   };
 
   applyTransformationMatrix = (matrix) => {
@@ -104,7 +104,7 @@ export default class ShaderService {
   applyViewProjectionMatrices = (view, projection) => {
     const { viewMatrix, projectionMatrix } = this;
     webglService.uploadMatrix4fv(viewMatrix, view);
-    webglService.uploadMatrix4fv(projection, projectionMatrix);
+    webglService.uploadMatrix4fv(projectionMatrix, projection);
   };
 
   applyLight = (light) => {
