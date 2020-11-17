@@ -23,8 +23,15 @@ export default class Texture {
   handleLoad = (img) => {
     webGlManagerService.bindTexture(this.texture);
     webGlManagerService.defineTexture(img);
+    if (this.isPowerOf2(img.width) && this.isPowerOf2(img.height)) {
+      webGlManagerService.textureMipmap2d();
+    } else {
+      webGlManagerService.textureNoPowerOfTwo();
+    }
     this.loaded = true;
   };
+
+  isPowerOf2 = (side) => (side & (side - 1)) === 0;
 
   bindTexture = () => {
     webGlManagerService.bindTexture(this.texture);

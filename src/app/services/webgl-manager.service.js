@@ -32,15 +32,15 @@ class WeblglManagerService {
   };
 
   // INT Buffers - for use with indices (the labels assigned to vertices for WebGL)
-  bindIntBuffer = (buffer) => {
+  bindElementBuffer = (buffer) => {
     const { gl } = this;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
   };
-  unbindIntBuffer = () => {
+  unbindElementBuffer = () => {
     const { gl } = this;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
   };
-  addElementIntBuffer = (indices) => {
+  addElementBuffer = (indices) => {
     const { gl } = this;
     // STATIC_DRAW = The indices are intended to be specified once by the application, and used many times as the source for WebGL drawing and image specification commands.
     gl.bufferData(
@@ -59,7 +59,7 @@ class WeblglManagerService {
     const { gl } = this;
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   };
-  addElementFloatBuffer = (vertices) => {
+  addFloatBuffer = (vertices) => {
     const { gl } = this;
     // STATIC_DRAW = The indices are intended to be specified once by the application, and used many times as the source for WebGL drawing and image specification commands.
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
@@ -211,6 +211,13 @@ class WeblglManagerService {
   textureMipmap2d = () => {
     const { gl } = this;
     return gl.generateMipmap(gl.TEXTURE_2D);
+  };
+
+  textureNoPowerOfTwo = () => {
+    const { gl } = this;
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   };
 }
 

@@ -47,14 +47,14 @@ export default class Model {
     this.generateTextureBuffer();
     this.generateNormalBuffer();
     this.generateVertexBuffer();
-    this.genreateIndexBuffer();
+    this.generateIndexBuffer();
   };
 
   generateTextureBuffer = () => {
     const { textureCoords } = this;
     this.textureBuffer = webGlManagerService.createBuffer();
     webGlManagerService.bindFloatBuffer(this.textureBuffer);
-    webGlManagerService.addElementFloatBuffer(textureCoords);
+    webGlManagerService.addFloatBuffer(textureCoords);
     webGlManagerService.unbindFloatBuffer();
   };
 
@@ -62,24 +62,24 @@ export default class Model {
     const { normals } = this;
     this.normalsBuffer = webGlManagerService.createBuffer();
     webGlManagerService.bindFloatBuffer(this.normalsBuffer);
-    webGlManagerService.addElementFloatBuffer(normals);
+    webGlManagerService.addFloatBuffer(normals);
     webGlManagerService.unbindFloatBuffer();
   };
 
   generateVertexBuffer = () => {
-    const { textureCoords } = this;
+    const { vertices } = this;
     this.vertexBuffer = webGlManagerService.createBuffer();
     webGlManagerService.bindFloatBuffer(this.vertexBuffer);
-    webGlManagerService.addElementFloatBuffer(textureCoords);
+    webGlManagerService.addFloatBuffer(vertices);
     webGlManagerService.unbindFloatBuffer();
   };
 
-  genreateIndexBuffer = () => {
-    const { vertices } = this;
+  generateIndexBuffer = () => {
+    const { indices } = this;
     this.indexBuffer = webGlManagerService.createBuffer();
-    webGlManagerService.bindFloatBuffer(this.indexBuffer);
-    webGlManagerService.addElementFloatBuffer(vertices);
-    webGlManagerService.unbindFloatBuffer();
+    webGlManagerService.bindElementBuffer(this.indexBuffer);
+    webGlManagerService.addElementBuffer(indices);
+    webGlManagerService.unbindElementBuffer();
   };
 
   applyShader = (shader) => {
@@ -96,7 +96,7 @@ export default class Model {
     shader.applyTextureCoords();
     webGlManagerService.bindFloatBuffer(normalsBuffer);
     shader.applyNormals();
-    webGlManagerService.addElementFloatBuffer(indexBuffer);
+    webGlManagerService.bindElementBuffer(indexBuffer);
     material.applyShader(shader);
   };
 }

@@ -58,7 +58,7 @@ class MouseListener {
       //   If we have listeners, udpate them!
       if (dragListeners.length) {
         for (let i = 0; i < dragListeners.length; i += 1) {
-          dragListeners[i].onDrag(dX, dY);
+          dragListeners[i](dX, dY);
         }
       }
     }

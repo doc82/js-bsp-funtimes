@@ -15,7 +15,9 @@ export default class SceneManagerService {
     this.models = models;
     this.canvas = document.getElementById(canvasId);
     this.gl = this.createContext(width, height);
+
     WebGlManagerService.init(this.gl);
+
     this.shader = new Shader();
     this.camera = new Camera();
     this.lightSource = new Light(110, 120, -100, 1.0, 1.0, 1.0, 0.4);
@@ -68,10 +70,7 @@ export default class SceneManagerService {
       // This gets the model info (textures/poly info) and passes it into the shader context thingy mabob
       // TODO: what is a shader-context thingy mabob?
       modelClass.applyShader(shader);
-      // Build position matrix from the model-instance
-      // TODO: get battter at this math
       shader.applyTransformationMatrix(model.getMatrix());
-      debugger;
 
       // Woooooo, all this work for this one call to rule them all
       WebGlManagerService.drawElements(modelClass.indices.length);
