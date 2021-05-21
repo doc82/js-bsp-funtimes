@@ -14,13 +14,12 @@
   },
   "homepage": "https://github.com/doc82/js-bsp-funtimes#readme",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development --open --hot --host 0.0.0.0",
-    "build": "webpack --config ./webpack.config.js",
+    "start": "rimraf dist pkg && webpack-dev-server --config ./webpack.config.js --mode development --open --hot --host localhost",
+    "build": "rimraf dist pkg && webpack --config ./webpack.config.js",
     "build:stats": "webpack --profile --json > dist/stats.json",
     "build:inspect": "webpack-bundle-analyzer dist/stats.json --port 4200",
     "build:memory": "export NODE_OPTIONS=--max_old_space_size=4096",
-    "lint": "eslint src",
-    "format": "prettier-eslint --write \"src/appV2/**/*.js\""
+    "lint": "eslint src"
   },
   "babel": {
     "presets": [
@@ -38,6 +37,7 @@
     "last 2 versions"
   ],
   "devDependencies": {
+    "@wasm-tool/wasm-pack-plugin": "^1.1.0",
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.1",
@@ -59,7 +59,8 @@
     "webpack": "^4.44.1",
     "webpack-bundle-analyzer": "^3.9.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.7.1"
+    "webpack-dev-server": "^3.7.1",
+    "rimraf": "^3.0.0"
   },
   "dependencies": {
     "classnames": "^2.2.6",

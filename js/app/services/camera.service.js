@@ -1,6 +1,6 @@
 import { vec3, mat4 } from 'gl-matrix';
 import mouseService from './mouse-listener.service';
-import webglMgrService from '../services/webgl-manager.service';
+import webglMgrService from './webgl-manager.service';
 
 const CAMERA_OPTIONS = {
   acclX: 0.01,
