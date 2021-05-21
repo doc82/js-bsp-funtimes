@@ -1,25 +1,27 @@
+/* eslint-disable no-console */
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 
 const env = process.env.NODE_ENV;
+const dist = path.resolve(__dirname, './dist');
 
 console.log(`Environment: ${process.env.NODE_ENV}`);
 
 const webpackConfig = {
   devtool: env === 'production' ? 'source-map' : 'source-map',
   mode: env === 'production' ? 'production' : 'development',
-  entry: [path.resolve(__dirname, './src/app/index.js')],
+  entry: [path.resolve(__dirname, './js/app/index.js')],
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: dist,
     filename: '[name].js',
     chunkFilename: '[id].[chunkhash].js'
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
-    // modules: ['node_modules'],
   },
   optimization: {
     runtimeChunk: 'single', // enable "runtime" chunk
@@ -42,7 +44,7 @@ const webpackConfig = {
     rules: [
       {
         test: /\.(jsx|js)$/,
-        include: path.resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, 'js'),
         exclude: /node_modules/,
         use: [
           {
@@ -86,7 +88,7 @@ const webpackConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.resolve(__dirname, 'src/app/index.html'),
+      template: path.resolve(__dirname, 'js/app/index.html'),
       filename: 'index.html',
       minify: {
         collapseWhitespace: true,
@@ -101,10 +103,13 @@ const webpackConfig = {
     }),
     new webpack.ProvidePlugin({
       React: 'react'
+    }),
+    new WasmPackPlugin({
+      crateDirectory: __dirname
     })
   ],
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: dist,
     watchContentBase: true,
     watchOptions: {
       ignored: /node_modules/

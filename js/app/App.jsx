@@ -5,6 +5,8 @@ import SceneManagerService from './scene-manager';
 import WebGL from './components/WebGL.jsx';
 import modelRegistry from './models/model.registry.js';
 import utils from './utils';
+// eslint-disable-next-line no-console
+import('../../pkg').catch(console.error);
 
 const DEFAULT_CONFIG = {
   width: 500,
